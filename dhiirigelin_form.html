@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhiiri Galinta Dhalinyarada</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gudbi Maqaalkaga Dhiirrigelinta</h1>
+  <form id="articleForm">
+    <label for="name">Magacaaga:</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="location">Magaalada:</label>
+    <input type="text" id="location" name="location" required />
+
+    <label for="title">Cinwaanka Maqaalka:</label>
+    <input type="text" id="title" name="title" required />
+
+    <label for="content">Mawduuca Maqaalka:</label>
+    <textarea id="content" name="content" rows="8" required></textarea>
+
+    <button type="submit">Gudbi</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("articleForm");
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const title = document.getElementById("title").value.trim();
+      const content = document.getElementById("content").value.trim();
+
+      if (name && location && title && content) {
+        const article = { name, location, title, content };
+
+        fetch("https://script.google.com/macros/s/PASTE_YOUR_DEPLOYMENT_URL_HERE/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(article)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.result === "success") {
+            alert("Maqaalkii waa la gudbiyey! Wuxuu galay Google Sheet.");
+            form.reset();
+          } else {
+            alert("Waxaa dhacay khalad. Fadlan isku day mar kale.");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("Khalad ayaa dhacay. Fadlan hubi internetka.");
+        });
+      }
+    });
+  </script>
+</body>
+</html>
